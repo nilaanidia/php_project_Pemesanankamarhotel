@@ -2,8 +2,8 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="index3.html" class="brand-link">
-    <img src="img/aston1.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+  <a href="dashboardp.php" class="brand-link">
+    <img src="img/aston1.png" alt="Aston Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
     <span class="brand-text font-weight-light">Aston Hotel & Resorts</span>
   </a>
 
@@ -12,7 +12,7 @@
     <!-- User Panel -->
 
     <!-- Sidebar Search -->
-    <div class="form-inline">
+    <!--<div class="form-inline">
       <div class="input-group" data-widget="sidebar-search">
         <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
@@ -21,7 +21,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div>-->
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
@@ -64,7 +64,7 @@
              
           </ul>
         </li>
-        <li class="nav-item">
+        <!--<li class="nav-item">
           <a href="#" class="nav-link" onclick="toggleDropdown(event, 'laporanMenu')">
             <i class="nav-icon fas fa-file-alt"></i>
             <p>
@@ -76,7 +76,7 @@
             <li class="nav-item"><a href="lap_pemesananp.php" class="nav-link"><p>Pemesanan</p></a></li>
            
           </ul>
-        </li>
+        </li> -->
  <li class="nav-item">
               <a href="feedback.php" class="nav-link"><p>feedback
               </p></a>
