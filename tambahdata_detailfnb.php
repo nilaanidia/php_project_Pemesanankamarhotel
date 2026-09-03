@@ -1,28 +1,26 @@
 <?php
-// Panggil file koneksi
+
 include "koneksi.php";
 
-// Cek koneksi di awal
+
 if ($koneksi->connect_error) {
     die("Koneksi Database Gagal Total: " . $koneksi->connect_error);
 }
 
-// =======================================================
-// === VARIABEL UNTUK MENGISI FORM SECARA OTOMATIS ===
-// =======================================================
+
 $selected_id_fnb = '';
 $selected_id_pelanggan = '';
 $selected_nama_pelanggan = '-- Isi Otomatis --';
 $selected_no_kamar = '-- Isi Otomatis --';
 
-// Cek apakah form di-submit untuk mendapatkan ID_FNB (Reload Form)
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_fnb']) && !isset($_POST['simpan_data'])) {
     
     $selected_id_fnb = (int)$_POST['id_fnb'];
 
     if ($selected_id_fnb > 0) {
         
-        // Kueri untuk mengambil ID_PELANGGAN, NAMA_PELANGGAN, dan NO_KAMAR
+   
         $sql_lookup = "SELECT 
                             f.ID_PELANGGAN,
                             p.NAMA_PELANGGAN,
@@ -45,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_fnb']) && !isset($_
                 $selected_nama_pelanggan = $row['NAMA_PELANGGAN'];
                 $selected_no_kamar = $row['NO_KAMAR'];
             } else {
-                // Data relasi tidak valid (seperti yang ditunjukkan di FNBError atau AJAX Error)
+            
                 echo "<script>alert('Kode FNB: Data pelanggan atau kamar terkait tidak valid di database. Periksa ID_PELANGGAN dan ID_KAMAR di tabel fnb.');</script>";
             }
             $stmt_lookup->close();
@@ -57,15 +55,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_fnb']) && !isset($_
 }
 
 
-// ------------------------------------------------
-//  PROSES SIMPAN DETAIL FNB (INSERT KE DATABASE)
-// ------------------------------------------------
-// Menggunakan 'simpan_data' untuk membedakan dari submit reload form
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_data'])) {
     
-    // Ambil data POST
+   
     $id_fnb          = $_POST['id_fnb'];
-    $id_pelanggan    = $_POST['hidden_id_pelanggan']; // AMBIL DARI INPUT HIDDEN
+    $id_pelanggan    = $_POST['hidden_id_pelanggan'];
     $tgl_fnb         = $_POST['tgl_fnb'];
     $jam_fnb         = $_POST['jam_fnb'];
     $food            = $_POST['food'];
@@ -73,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_data'])) {
     $jumlah_fnb      = $_POST['jumlah_fnb'];
     $subtotal_fnb    = $_POST['subtotal_fnb']; 
     
-    // Validasi dasar
+    
     if (empty($id_pelanggan) || empty($id_fnb) || (int)$id_pelanggan === 0) {
          echo "<script>
                 alert('❌ Gagal menyimpan: ID Pelanggan atau ID FNB kosong/tidak valid. Pilih Kode FNB dan tunggu form terisi otomatis.');
@@ -82,12 +77,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_data'])) {
         exit;
     }
 
-    // Hitung Total FNB
+    
     $subtotal_val = (int)$subtotal_fnb;
     $jumlah_val = (int)$jumlah_fnb;
     $total_fnb = $subtotal_val * $jumlah_val; 
     
-    // Query tambah data ke tabel detail_food_n_beverage
+    
     $sql_insert = "INSERT INTO detail_food_n_beverage 
                    (ID_FNB, ID_PELANGGAN, TGL_FNB, JAM_FNB, FOOD, BEVERAGE, JUMLAH_FNB, SUBTOTAL_FNB, TOTAL_FNB)
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -95,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_data'])) {
     $insert_stmt = $koneksi->prepare($sql_insert);
     
     if ($insert_stmt) {
-        // Tipe data: iisssisii (sesuaikan dengan tipe data kolom Anda)
+        
         $insert_stmt->bind_param("iissisiii", 
                                 $id_fnb, 
                                 $id_pelanggan, 
@@ -131,20 +126,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_data'])) {
 }
 
 
-// ======================================================
-//  QUERY UNTUK SELECT DATA DI DALAM FORM
-// ======================================================
 
-// Data Pelanggan (Hanya untuk mapping)
+
+
 $sql_pelanggan = "SELECT ID_PELANGGAN, NAMA_PELANGGAN FROM pelanggan ORDER BY NAMA_PELANGGAN";
 $result_pelanggan = $koneksi->query($sql_pelanggan);
 
-// Data FNB (untuk dropdown Kode FNB)
-// TELAH DIPERBAIKI: Mengambil KODE_FNB dari tabel 'fnb', BUKAN 'detail_food_n_beverage'
-$sql_fnb_codes = "SELECT ID_FNB, KODE_FNB FROM food_n_beverage ORDER BY ID_FNB DESC"; // <--- BARIS KRUSIAL (dulu baris 148)
+
+$sql_fnb_codes = "SELECT ID_FNB, KODE_FNB FROM food_n_beverage ORDER BY ID_FNB DESC"; 
 $result_fnb_codes = $koneksi->query($sql_fnb_codes);
 
-// Set tanggal dan jam saat ini sebagai default
+
 $tgl_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i');
 ?>
@@ -167,7 +159,7 @@ $jam_sekarang = date('H:i');
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-                <h1>Tambah Data Detail Food & Beverage (Tanpa AJAX)</h1>
+                <h1>Tambah Data Detail Food & Beverage</h1>
             </div>
         </section>
 

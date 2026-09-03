@@ -32,7 +32,7 @@ function sendmail_verify($email, $verify_token){
         $mail->Body = "
             <h2>Terima kasih telah registrasi</h2>
             <p>Silakan klik link berikut untuk verifikasi akun Anda:</p>
-            <a href='http://localhost/project_hotel/verify_email.php?token=$verify_token'>
+            <a href='http://localhost/PemesananKamarHotel1/verify_email.php?token=$verify_token'>
                 Klik untuk verifikasi
             </a>
         ";

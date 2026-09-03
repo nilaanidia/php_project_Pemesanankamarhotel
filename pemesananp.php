@@ -13,11 +13,13 @@ $data = [
     'TGL_CHECK_IN'      => '',
     'UANG_MUKA'      => ''
 ];
-$is_readonly = isset($_SESSION['PESANAN_READONLY']);
+$is_readonly = (isset($_GET['readonly']) && $_GET['readonly'] == 1) || isset($_SESSION['PESANAN_READONLY']);
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $query = $koneksi->query("SELECT * FROM pemesanan WHERE ID_PEMESANAN = '$id'");
-    $data = $query->fetch_assoc();
+    if ($query->num_rows > 0) {
+        $data = $query->fetch_assoc();
+    }
 }
 
 // Proses penyimpanan data
@@ -36,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($koneksi->query($sql) === TRUE) {
         $last_id = $koneksi->insert_id;
+        $_SESSION['PESANAN_READONLY'] = true;
         echo "<script>
                 alert('✅ Data pemesanan berhasil ditambahkan!');
                 window.location = 'pemesananp.php?readonly=1&id=$last_id';

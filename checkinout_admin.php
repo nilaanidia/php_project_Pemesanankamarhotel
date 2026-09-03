@@ -1,7 +1,7 @@
 <?php
 include 'koneksi.php';
 
-// Query gabungan data Check-In & Check-Out
+
 $sql = "SELECT 
             checkin_checkout.ID_CHECKIN_OUT,
             pemesanan.TGL_PESAN,
@@ -112,9 +112,9 @@ $result = $koneksi->query($sql);
                       echo "<td>{$row['STATUS_CHECKINOUT']}</td>";
                       echo "<td class='text-center'>
                               <a href='update_checkinoutadmin.php?id={$row['ID_CHECKIN_OUT']}' class='btn btn-success btn-sm'>Update</a>
-                              <a href='delete_checkinoutadmin.php?id={$row['ID_CHECKIN_OUT']}' 
+                              <!-- <a href='delete_checkinoutadmin.php?id={$row['ID_CHECKIN_OUT']}' 
                                  class='btn btn-danger btn-sm'
-                                 onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>Delete</a>
+                                 onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>Delete</a>-->
                             </td>";
                       echo "</tr>";
                   }

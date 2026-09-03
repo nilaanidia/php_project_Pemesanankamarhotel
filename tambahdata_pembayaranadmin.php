@@ -179,6 +179,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_checkin_out']) && !
 // =======================================================
 // === SIMPAN PEMBAYARAN ===
 // =======================================================
+// =======================================================
+// === SIMPAN PEMBAYARAN (BAGIAN YANG DIPERBAIKI) ===
+// =======================================================
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_pembayaran'])) {
 
     $id_checkin_out = (int)$_POST['id_checkin_out'];
@@ -208,7 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_pembayaran'])) 
 
     // INSERT PEMBAYARAN dengan handling NULL
     if ($id_laundry === NULL && $id_fnb === NULL) {
-        // Kedua NULL
+        // Kedua NULL - 11 placeholder (? sebanyak 11)
         $sql_insert = "INSERT INTO pembayaran 
             (ID_JENIS_KAMAR, ID_FNB, ID_LAUNDRY, ID_PELANGGAN, 
             TGL_CHECK_IN, LAMA_INAP, TOTAL, UANG_MUKA, 
@@ -217,6 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_pembayaran'])) 
             VALUES (?, NULL, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $koneksi->prepare($sql_insert);
+        // 11 parameter: i,i,s,i,i,i,i,i,i,i,i
         $stmt->bind_param(
             "iisiiiiiiii",
             $id_jenis_kamar,
@@ -231,8 +235,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_pembayaran'])) 
             $total_tagihan_akhir,
             $id_checkin_out
         );
+
     } elseif ($id_laundry === NULL) {
-        // Laundry NULL, FNB ada
+        // Laundry NULL, FNB ada - 12 placeholder
         $sql_insert = "INSERT INTO pembayaran 
             (ID_JENIS_KAMAR, ID_FNB, ID_LAUNDRY, ID_PELANGGAN, 
             TGL_CHECK_IN, LAMA_INAP, TOTAL, UANG_MUKA, 
@@ -241,6 +246,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_pembayaran'])) 
             VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $koneksi->prepare($sql_insert);
+        // 12 parameter: i,i,i,s,i,i,i,i,i,i,i,i
         $stmt->bind_param(
             "iiisiiiiiiii",
             $id_jenis_kamar,
@@ -256,8 +262,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_pembayaran'])) 
             $total_tagihan_akhir,
             $id_checkin_out
         );
+        
     } elseif ($id_fnb === NULL) {
-        // FNB NULL, Laundry ada
+        // FNB NULL, Laundry ada - 12 placeholder
         $sql_insert = "INSERT INTO pembayaran 
             (ID_JENIS_KAMAR, ID_FNB, ID_LAUNDRY, ID_PELANGGAN, 
             TGL_CHECK_IN, LAMA_INAP, TOTAL, UANG_MUKA, 
@@ -266,6 +273,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_pembayaran'])) 
             VALUES (?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $koneksi->prepare($sql_insert);
+        // 12 parameter: i,i,i,s,i,i,i,i,i,i,i,i
         $stmt->bind_param(
             "iiisiiiiiiii",
             $id_jenis_kamar,
@@ -281,8 +289,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_pembayaran'])) 
             $total_tagihan_akhir,
             $id_checkin_out
         );
+        
     } else {
-        // Kedua ada nilai
+        // Kedua ada nilai - 13 placeholder
         $sql_insert = "INSERT INTO pembayaran 
             (ID_JENIS_KAMAR, ID_FNB, ID_LAUNDRY, ID_PELANGGAN, 
             TGL_CHECK_IN, LAMA_INAP, TOTAL, UANG_MUKA, 
@@ -291,8 +300,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['simpan_pembayaran'])) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $koneksi->prepare($sql_insert);
+        // 13 parameter: i,i,i,i,s,i,i,i,i,i,i,i,i
         $stmt->bind_param(
-            "iiisiiiiiiii",
+            "iiiisiiiiiiii",
             $id_jenis_kamar,
             $id_fnb,
             $id_laundry,

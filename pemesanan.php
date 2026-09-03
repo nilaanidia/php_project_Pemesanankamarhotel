@@ -98,9 +98,9 @@ $result = $koneksi->query($sql);
                       echo "<td>Rp " . number_format($row['UANG_MUKA'], 0, ',', '.') . "</td>";
                       echo "<td>
                                 <a href='update_pemesananadmin.php?id=" . $row['ID_PEMESANAN'] . "' class='btn btn-success btn-sm'>Update</a>
-                                <a href='delete_pemesananadmin.php?id=" . $row['ID_PEMESANAN'] . "' 
+                                <!--<a href='delete_pemesananadmin.php?id=" . $row['ID_PEMESANAN'] . "' 
                                     class='btn btn-danger btn-sm' 
-                                    onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>Delete</a>
+                                    onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>Delete</a>-->
                               </td>";
                       echo "</tr>";
                   }

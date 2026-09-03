@@ -1,7 +1,7 @@
 <?php
 include 'koneksi.php';
 
-// Query untuk mendapatkan daftar ID Pemesanan dan data terkait
+
 $sql_pemesanan = "SELECT 
                     p.ID_PEMESANAN, 
                     p.TGL_PESAN, 
@@ -29,8 +29,8 @@ $result_pemesanan = $koneksi->query($sql_pemesanan);
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-  <?php include 'header.php'; // Asumsi file ini ada ?>
-  <?php include 'navbar.php'; // Asumsi file ini ada ?>
+  <?php include 'header.php'; ?>
+  <?php include 'navbar.php';  ?>
 
   <div class="content-wrapper">
     <section class="content-header">
@@ -132,7 +132,7 @@ $result_pemesanan = $koneksi->query($sql_pemesanan);
           </div>
           <div class="card-footer">
             <button type="submit" class="btn btn-success">Simpan Data</button>
-            <a href="data_checkinoutadmin.php" class="btn btn-default">Kembali</a>
+            <a href="checkinout_admin.php" class="btn btn-default">Kembali</a>
           </div>
         </form>
         </div>

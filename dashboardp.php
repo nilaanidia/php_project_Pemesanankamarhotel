@@ -1,9 +1,22 @@
 <?php
+session_start(); // WAJIB PALING ATAS!!!
+
 include 'koneksi.php';
 
 // Cek koneksi
 if ($koneksi->connect_error) {
     die("Koneksi Database Gagal: " . $koneksi->connect_error);
+}
+
+// Mencegah halaman tersimpan di cache (agar tombol back tidak bisa kembali)
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+// Jika belum login, paksa kembali ke login
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php");
+    exit();
 }
 
 // Query untuk statistik kamar
@@ -26,6 +39,7 @@ $sql_jenis = "SELECT
               LEFT JOIN kamar k ON jk.ID_JENIS_KAMAR = k.ID_JENIS_KAMAR
               GROUP BY jk.ID_JENIS_KAMAR, jk.JENIS_KAMAR
               ORDER BY jk.JENIS_KAMAR";
+
 $result_jenis = $koneksi->query($sql_jenis);
 
 // Siapkan data untuk chart
@@ -60,7 +74,10 @@ $result_table = $koneksi->query($sql_table);
 $persentase_tersedia = ($stats['total_kamar'] > 0) ? round(($stats['tersedia'] / $stats['total_kamar']) * 100, 1) : 0;
 $persentase_terisi = ($stats['total_kamar'] > 0) ? round(($stats['terisi'] / $stats['total_kamar']) * 100, 1) : 0;
 $persentase_maintenance = ($stats['total_kamar'] > 0) ? round(($stats['maintenance'] / $stats['total_kamar']) * 100, 1) : 0;
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">

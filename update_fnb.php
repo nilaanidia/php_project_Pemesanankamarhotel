@@ -1,12 +1,12 @@
 <?php
-// Panggil file koneksi
+
 include "koneksi.php";
 
-// Ambil ID Food & Beverage dari URL
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Ambil data berdasarkan ID
+    
     $query = "SELECT food_n_beverage.*, kamar.NO_KAMAR, pelanggan.NAMA_PELANGGAN
               FROM food_n_beverage
               INNER JOIN kamar ON food_n_beverage.ID_KAMAR = kamar.ID_KAMAR
@@ -25,7 +25,7 @@ if (isset($_GET['id'])) {
     }
 }
 
-// Proses update data Food & Beverage
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];
     $id_kamar = $_POST['id_kamar'];
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h3 class="card-title">Form Edit Food & Beverage</h3>
           </div>
 
-          <!-- ✅ Form Edit Food & Beverage -->
+          
           <form action="" method="POST">
             <div class="card-body">
 
@@ -130,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <a href="foodbeverage.php" class="btn btn-secondary">Batal</a>
             </div>
           </form>
-          <!-- ✅ Akhir Form Edit Food & Beverage -->
+          
 
         </div>
       </div>

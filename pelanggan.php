@@ -80,9 +80,9 @@ $result = $koneksi->query($sql);
                       echo "<td>" . htmlspecialchars($row['EMAIL']) . "</td>";
                       echo "<td>
                               <a href='update_pelangganadmin.php?id=" . $row['ID_PELANGGAN'] . "' class='btn btn-success btn-sm'>Update</a>
-                              <a href='delete_pelangganadmin.php?id=" . $row['ID_PELANGGAN'] . "' 
+                              <!-- <a href='delete_pelangganadmin.php?id=" . $row['ID_PELANGGAN'] . "' 
                                 class='btn btn-danger btn-sm' 
-                                onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>Delete</a>
+                                onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>Delete</a>-->
                             </td>";
                       echo "</tr>";
                   }

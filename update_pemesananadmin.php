@@ -1,7 +1,7 @@
 <?php
 include "koneksi.php";
 
-// Pastikan ada parameter id
+
 if (!isset($_GET['id'])) {
     echo "<script>
             alert('ID Pemesanan tidak ditemukan!');
@@ -10,10 +10,18 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-$id = $_GET['id'];
+$id = intval($_GET['id']); 
 
-// Ambil data berdasarkan ID_PESANAN
-$query = $koneksi->query("SELECT * FROM pemesanan WHERE ID_PESANAN = '$id'");
+
+$query = $koneksi->query("SELECT * FROM pemesanan WHERE ID_PEMESANAN = '$id'");
+
+if (!$query) {
+    die("Error query: " . $koneksi->error . "<br><br>
+         <strong>Kemungkinan nama kolom salah!</strong><br>
+         Cek nama kolom primary key di tabel pemesanan Anda.<br>
+         Biasanya: ID_PEMESANAN, PEMESANAN_ID, atau ID_PESAN");
+}
+
 if ($query->num_rows == 0) {
     echo "<script>
             alert('Data tidak ditemukan!');
@@ -23,25 +31,26 @@ if ($query->num_rows == 0) {
 }
 $data = $query->fetch_assoc();
 
-// Ambil data jenis kamar dan pelanggan untuk dropdown
+
 $jenis_kamar = $koneksi->query("SELECT * FROM jenis_kamar");
 $pelanggan = $koneksi->query("SELECT * FROM pelanggan");
 
-// Proses update data
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id_jenis_kamar = $_POST['id_jenis_kamar'];
-    $id_pelanggan   = $_POST['id_pelanggan'];
-    $tgl_pesan      = $_POST['tgl_pesan'];
-    $jam_pesan      = $_POST['jam_pesan'];
-    $uang_muka      = $_POST['uang_muka'];
+    $id_jenis_kamar = intval($_POST['id_jenis_kamar']);
+    $id_pelanggan   = intval($_POST['id_pelanggan']);
+    $tgl_pesan      = $koneksi->real_escape_string($_POST['tgl_pesan']);
+    $jam_pesan      = $koneksi->real_escape_string($_POST['jam_pesan']);
+    $uang_muka      = intval($_POST['uang_muka']);
+
 
     $update = $koneksi->query("UPDATE pemesanan 
         SET ID_JENIS_KAMAR = '$id_jenis_kamar',
             ID_PELANGGAN   = '$id_pelanggan',
-            TLG_PESAN      = '$tgl_pesan',
+            TGL_PESAN      = '$tgl_pesan',
             JAM_PESAN      = '$jam_pesan',
             UANG_MUKA      = '$uang_muka'
-        WHERE ID_PESANAN   = '$id'");
+        WHERE ID_PEMESANAN = '$id'");
 
     if ($update) {
         echo "<script>
@@ -88,7 +97,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h3 class="card-title">Form Update Pemesanan</h3>
           </div>
 
-          <!-- ✅ Form dimulai di sini -->
           <form action="" method="POST">
             <div class="card-body">
 
@@ -121,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <div class="form-group">
                 <label for="tgl_pesan">Tanggal Pesan</label>
                 <input type="date" class="form-control" id="tgl_pesan" name="tgl_pesan" 
-                       value="<?= $data['TLG_PESAN']; ?>" required>
+                       value="<?= $data['TGL_PESAN']; ?>" required>
               </div>
 
               <div class="form-group">
@@ -133,18 +141,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <div class="form-group">
                 <label for="uang_muka">Uang Muka (Rp)</label>
                 <input type="text" class="form-control" id="uang_muka" name="uang_muka"
-                       value="<?= $data['UANG_MUKA']; ?>" 
+                       value="<?= number_format($data['UANG_MUKA'], 0, ',', '.'); ?>" 
                        placeholder="Masukkan uang muka" required
                        oninput="this.value = this.value.replace(/[^0-9]/g, '');">
               </div>
 
             </div>
             <div class="card-footer">
-              <button type="submit" class="btn btn-primary">Update</button>
-              <a href="data_pemesananadmin.php" class="btn btn-secondary">Batal</a>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Update
+              </button>
+              <a href="pemesanan.php" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Batal
+              </a>
             </div>
           </form>
-          <!-- ✅ Form berakhir di sini -->
 
         </div>
       </div>

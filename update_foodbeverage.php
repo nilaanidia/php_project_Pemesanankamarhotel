@@ -1,9 +1,9 @@
 <?php
-// File: update_foodbeverage.php
+
 
 include 'koneksi.php';
 
-// --- BAGIAN 1: Mengambil Data Lama (Data yang akan di-edit) ---
+
 
 $data_lama = null;
 $error_message = '';
@@ -11,7 +11,7 @@ $error_message = '';
 if (isset($_GET['id'])) {
     $id_detail_fnb = $koneksi->real_escape_string($_GET['id']);
 
-    // Query untuk mengambil data yang akan di-update
+   
     $sql_get = "SELECT 
                     dfnb.ID_DETAIL_FNB,
                     dfnb.ID_FNB,
@@ -41,7 +41,7 @@ if (isset($_GET['id'])) {
     $error_message = "ID tidak disediakan.";
 }
 
-// Query untuk mengisi dropdown (Pelanggan dan FNB)
+
 $sql_pelanggan = "SELECT ID_PELANGGAN, NAMA_PELANGGAN FROM pelanggan ORDER BY NAMA_PELANGGAN";
 $result_pelanggan = $koneksi->query($sql_pelanggan);
 
@@ -49,10 +49,10 @@ $sql_fnb = "SELECT ID_FNB, KODE_FNB FROM food_n_beverage ORDER BY KODE_FNB";
 $result_fnb = $koneksi->query($sql_fnb);
 
 
-// --- BAGIAN 2: Menangani Proses Update (Data dari POST) ---
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $data_lama) {
-    // Ambil data dari formulir
+  
     $id_detail_fnb_post = $koneksi->real_escape_string($_POST['ID_DETAIL_FNB']);
     $id_pelanggan_post = $koneksi->real_escape_string($_POST['ID_PELANGGAN']);
     $id_fnb_post = $koneksi->real_escape_string($_POST['ID_FNB']);
@@ -62,14 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $data_lama) {
     $food_post = $koneksi->real_escape_string($_POST['FOOD']);
     $beverage_post = $koneksi->real_escape_string($_POST['BEVERAGE']);
     
-    // Ambil nilai numerik dari form untuk perhitungan
-    $jumlah_fnb_post = (float)$_POST['JUMLAH_FNB']; // Harga Satuan
-    $subtotal_fnb_post = (float)$_POST['SUBTOTAL_FNB']; // Kuantitas Pesanan
+   
+    $jumlah_fnb_post = (float)$_POST['JUMLAH_FNB']; 
+    $subtotal_fnb_post = (float)$_POST['SUBTOTAL_FNB']; 
     
-    // Re-hitung TOTAL di sisi server untuk validasi (Penting!)
+    
     $total_fnb_post = $jumlah_fnb_post * $subtotal_fnb_post; 
 
-    // Query UPDATE
+    
     $sql_update = "UPDATE detail_food_n_beverage SET
                     ID_PELANGGAN = '$id_pelanggan_post',
                     ID_FNB = '$id_fnb_post',
@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $data_lama) {
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Update Data</button>
-                        <a href="data_food_beverage.php" class="btn btn-default">Batal</a>
+                       <a href="detail_food_n_beverage.php" class="btn btn-default">Batal</a>
                     </div>
                 </form>
                 
@@ -237,29 +237,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $data_lama) {
 <script src="dist/js/adminlte.min.js"></script>
 
 <script>
-    /**
-     * Fungsi untuk menghitung TOTAL FNB secara otomatis.
-     * TOTAL_FNB = Harga Satuan (dari field JUMLAH_FNB) * Kuantitas (dari field SUBTOTAL_FNB)
-     */
+   
     function hitungTotal() {
-        // Ambil nilai Harga Satuan
+        
         var hargaSatuan = parseFloat($('#JUMLAH_FNB').val()) || 0;
         
-        // Ambil nilai Kuantitas Pesanan
+        
         var kuantitas = parseFloat($('#SUBTOTAL_FNB').val()) || 0;
         
-        // Hitung Total
+      
         var total = hargaSatuan * kuantitas;
         
-        // Isi nilai Total ke dalam field TOTAL_FNB
+       
         $('#TOTAL_FNB').val(total.toFixed(0));
     }
 
     $(document).ready(function() {
-        // Inisialisasi perhitungan saat halaman dimuat (untuk memastikan data lama sudah benar)
+
         hitungTotal(); 
         
-        // Panggil fungsi hitungTotal setiap kali nilai dari dua input ini berubah
+       
         $('#JUMLAN_FNB, #SUBTOTAL_FNB').on('input', hitungTotal);
     });
 </script>
